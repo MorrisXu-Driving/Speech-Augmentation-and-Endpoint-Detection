@@ -4,17 +4,16 @@
 % 2. zrc2
 clear all; clc; close all;
 
-%--------------------DEMO
-
+% MMSE Filter Denoising
 %--- desired signal-------------------
 [s,fs]= audioread('bluesky1.wav');
-T= 4; % time duration for the sim
+T= 4; % time duration to denoise (less than the duration of input signal)
 T_start= 0;
 N= T*fs;
 n1= max(T_start*fs,1);
 n=0:1:(N-1); n= n';
 time=(0:N-1)/fs;  
-s=s/max(abs(s));                        % ·ù¶È¹éÒ»»¯
+s=s/max(abs(s));                        % Normalization
 s= s(n1:(n1+N-1));
 
 %----LTI system setting-------
@@ -33,7 +32,6 @@ v2= v((L+1):(L+N));
 x= v2;
 d= s + v1;
 
-
 %---- optimal filter---------------------------
 M= 500;     %change the filter size
 mu= 0.1;    %change the iterate parameter
@@ -43,36 +41,37 @@ y= zeros(N,1);
 w= zeros(M,1);
 x_vec= zeros(M,1);
 
-
 for i=1:N
     x_vec= [ x(i); x_vec(1:M-1) ];
     y(i)= w'*x_vec;
     e(i)= d(i)- y(i);
     w= w + mu*e(i)*x_vec;
 end
- fprintf('%4d   %4d   \n',db(snr(d,v1)),db(snr(e,v1)));
+fprintf('%4d   %4d   \n',db(snr(d,v1)),db(snr(e,v1)));
 
 % Visuluzation-----------------------------------------
 figure(1)
-subplot 211;plot(time,d); % ´øÓĞÔëÒôµÄÓïÒôĞÅºÅ
-subplot 212;plot(time,e); % Í¨¹ıMMSE FilterºóµÄÓïÒôĞÅºÅ
-
-
+subplot 211;plot(time,d); % å¸¦æœ‰å™ªéŸ³çš„è¯­éŸ³ä¿¡å·
+subplot 212;plot(time,e); % é€šè¿‡MMSE Filteråçš„è¯­éŸ³ä¿¡å·
 figure(2)
 plot(time,e,'b');         
 title('Speech Signal End Point Detection');
 ylabel('Amplitude'); axis([0 max(time) -1 1]); grid;
 xlabel('Time/s');
-wlen=500; inc=100;% ·ÖÖ¡²ÎÊı
-IS=0.2; overlap=wlen-inc;               % ÉèÖÃIS(CHANGE!!!)
-NIS=fix((IS*fs-wlen)/inc +1);           % ¼ÆËãNIS
-fn=fix((N-wlen)/inc)+1;                 % ÇóÖ¡Êı
-frameTime=frame2time(fn, wlen, inc, fs);% ¼ÆËãÃ¿Ö¡¶ÔÓ¦µÄÊ±¼ä
-ss=enframe(e,wlen,inc)';
 
-[zcr,amp,voiceseg,vsl,SF,NF]=SpeechSegment(e,wlen,inc,NIS);  % ¶Ëµã¼ì²â
 
-for k=1 : vsl                           % »­³öÆğÖ¹µãÎ»ÖÃ
+
+% Endpoint Detection
+wlen=500; inc=100;                      % åˆ†å¸§å‚æ•°
+IS=0.2; overlap=wlen-inc;               % è®¾ç½®IS
+NIS=fix((IS*fs-wlen)/inc +1);           % è®¡ç®—NIS
+fn=fix((N-wlen)/inc)+1;                 % æ±‚å¸§æ•°
+frameTime=frame2time(fn, wlen, inc, fs);% è®¡ç®—æ¯å¸§å¯¹åº”çš„æ—¶é—´
+ss=enframe(e,wlen,inc)';                % å¯¹æ¶ˆå™ªåè¯­éŸ³ä¿¡å·è¿›è¡Œåˆ†å¸§
+
+[zcr,amp,voiceseg,vsl,SF,NF]=SpeechSegment(e,wlen,inc,NIS);  % ç«¯ç‚¹æ£€æµ‹
+
+for k=1 : vsl                           % ç”»å‡ºè¯­éŸ³ä¿¡å·èµ·æ­¢ç‚¹ä½ç½®
     nx1=voiceseg(k).begin; nx2=voiceseg(k).end;
     nxl=voiceseg(k).duration;
     fprintf('%4d   %4d   %4d   %4d\n',k,nx1,nx2,nxl);
