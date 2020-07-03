@@ -20,5 +20,5 @@ This repository is developed in MATLAB. Speech Augmentation is based on Adaptive
  # Algorithm Architecture
  ## 1. Speech Augmentation based on Adaptive Filtering
  The technique used in this algorithm is MMSE filter, also called Wiener filter. It is an LTI system that was shown below
- <div align=center><img src=""></div>
- The filter has an optimization object that'v<sub>2</sub>*W=v<sub>1</sub>'. Intuitively, the filter is trying to learn 
+ <div align=center><img src="https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/MMSE_1.JPG"></div>   
+The filter has an optimization object that **'V<sub>2</sub>*W=V<sub>1</sub>'**. Intuitively, the filter is trying to learn the **impulse response** for the noise propogating from noise source to the wanted signal source.
