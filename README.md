@@ -33,3 +33,14 @@ After determing the optimization objective, we need to determine the optimizatio
 Speech Waveform before denoising(SNR:-6dB)
 ![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/After%20Denoising.png)  
 Speech Waveform after denoising(SNR:16.2dB)
+
+## 2. Endpoint Detection based on VAD 
+### a. Algorithm Flow
+In this projeect the algorithm determins the speech/non-speech frame based on `Short-Time Energy(STE)` and `Zero-Crossing Rate(ZCR)` of background signal at the start of input audio, the signal between 0-IS. The judgement flowchart is shown below:
+![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/Endpoint%20Detection.png)
+### b. Detection Result
+The result on clean speech signal:
+![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/ED-chean.png)  
+The result on the denoising speec
+The endpoints detected in yellow is wrong, which means that more features need to consider when tackling with high ZCR signals.
+![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/ED-noise.png)
