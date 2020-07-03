@@ -43,7 +43,7 @@ After determing the optimization objective, we need to determine the optimizatio
  <div align=center><img src="https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/image.png"></div>   
 
 ### c. Denoising Result
-Speech Waveform before denoising(SNR:-6dB)
+Speech Waveform before denoising(SNR:-6dB)  
 ![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/Before%20Denoising.png)  
 Speech Waveform after denoising(SNR:16.2dB)  
 ![Image](https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection/blob/master/Readme_img/After%20Denoising.png)  
