@@ -3,7 +3,8 @@ This repository is developed in MATLAB. Speech Augmentation is based on Adaptive
 
 # Installation
 ## 1. git clone all files under the same directory.
-`https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection.git`
+1. `https://github.com/MorrisXu-Driving/Speech-Augmentation-and-Endpoint-Detection.git`
+2. Run `SpeechDetect.m` in MATLAB.
 ## 2. File Introduction
    - SpeechDetect.m: The main program.
    - SpeechSegment.m: The endpoint detection algorithm based on VAD. It returns:
@@ -16,6 +17,19 @@ This repository is developed in MATLAB. Speech Augmentation is based on Adaptive
    - SegmentInfo: A depend function in SpeechSegment.m
    - frame2time: Calculate the corresponding time step of each frame after enframing the signal
    - zc2.m: Calculate the ZCR of each frame
+## 3. Parameter Setting:
+   - Parameter in `SpeechDetect.m`:
+      - `wlen`: enframing window length
+      - `inc`: enframing increment
+      - `IS`: The time duration in second of the non-speech/background signal at the start of input audio
+   - Parameter in `SpeechSegment.m`:
+      - `maxsilence`: Maximum length of silence in frame number accepted in one speech segment
+      - `minspeech`: Minimum length of speech signal in frame number accpeted to recognize it as a speech segment
+      - `r1`: threshold coefficient for lower bound of STE gate
+      - `r2`: threshold coefficient for upper bound of STE gate
+      - `r3`: threshold coefficient for ZCR gate.  
+     **To understand the parameters please go through the Algorithm Architecture carefully!**
+
    
  # Algorithm Architecture
  ## 1. Speech Augmentation based on Adaptive Filtering
