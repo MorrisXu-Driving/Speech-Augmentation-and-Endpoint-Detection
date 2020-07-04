@@ -1,6 +1,6 @@
 function [zcr,amp,voiceseg,vsl,SF,NF]=SpeechSegment(x,wlen,inc,NIS)
-x=x(:);                                 % °Ñx×ª»»³ÉÁĞÊı×é
-maxsilence = 10;                        % ³õÊ¼»¯£¨CHANGE!!!£©
+x=x(:);                                 % æŠŠxè½¬æ¢æˆåˆ—æ•°ç»„
+maxsilence = 10;                        % åˆå§‹åŒ–ï¼ˆCHANGE!!!ï¼‰
 minspeech  = 20;    
 status  = 0;
 count   = 0;
@@ -8,56 +8,56 @@ silence = 0;
 r1 = 1;
 r2 = 2;
 r3 = 2;
-y=enframe(x,wlen,inc)';                 % ·ÖÖ¡
-fn=size(y,2);                           % Ö¡Êı
-amp=sum(y.^2);                          % ÇóÈ¡¶ÌÊ±Æ½¾ùÄÜÁ¿
+y=enframe(x,wlen,inc)';                 % åˆ†å¸§
+fn=size(y,2);                           % å¸§æ•°
+amp=sum(y.^2);                          % æ±‚å–çŸ­æ—¶å¹³å‡èƒ½é‡
 
-zcr=zc2(y,fn);                          % ¼ÆËã¶ÌÊ±Æ½¾ù¹ıÁãÂÊ
+zcr=zc2(y,fn);                          % è®¡ç®—çŸ­æ—¶å¹³å‡è¿‡é›¶ç‡
 
-ampth=mean(amp(1:NIS));                 % ¼ÆËã³õÊ¼ÎŞ»°¶ÎÇø¼äÄÜÁ¿ºÍ¹ıÁãÂÊµÄÆ½¾ùÖµ               
+ampth=mean(amp(1:NIS));                 % è®¡ç®—åˆå§‹æ— è¯æ®µåŒºé—´èƒ½é‡å’Œè¿‡é›¶ç‡çš„å¹³å‡å€¼               
 zcrth=mean(zcr(1:NIS));
-amp2=r1*ampth; amp1=r2*ampth;             % ÉèÖÃÄÜÁ¿ºÍ¹ıÁãÂÊµÄãĞÖµ(T1,T2)
+amp2=r1*ampth; amp1=r2*ampth;           % è®¾ç½®èƒ½é‡å’Œè¿‡é›¶ç‡çš„é˜ˆå€¼(T1,T2)
 zcr2=r3*zcrth;
 
-%¿ªÊ¼¶Ëµã¼ì²â
-xn=1;                                   % ¼ÙÉè×îÉÙÒ»¸öÓïÒôÆ¬¶Î
+%å¼€å§‹ç«¯ç‚¹æ£€æµ‹
+xn=1;                                   % å‡è®¾æœ€å°‘ä¸€ä¸ªè¯­éŸ³ç‰‡æ®µ
 for n=1:fn
    switch status
-   case {0,1}                           % 0 = ¾²Òô, 1 = ¿ÉÄÜ¿ªÊ¼
-      if amp(n) > amp1                  % È·ĞÅ½øÈëÓïÒô¶Î
-         x1(xn) = max(n-count(xn)-1,1); % ÓïÒôĞÅºÅ¿ªÊ¼Î»ÖÃ£¬starting point
+   case {0,1}                           % 0 = é™éŸ³, 1 = å¯èƒ½å¼€å§‹
+      if amp(n) > amp1                  % ç¡®ä¿¡è¿›å…¥è¯­éŸ³æ®µ
+         x1(xn) = max(n-count(xn)-1,1); % è¯­éŸ³ä¿¡å·å¼€å§‹ä½ç½®ï¼Œstarting point
          status  = 2;
          silence(xn) = 0;
          count(xn)   = count(xn) + 1;
-      elseif amp(n) > amp2 | ...        % ¿ÉÄÜ´¦ÓÚÓïÒô¶Î
+      elseif amp(n) > amp2 | ...        % å¯èƒ½å¤„äºè¯­éŸ³æ®µ
          zcr(n) > zcr2
          status = 1;
          count(xn)  = count(xn) + 1;
-      else                              % ¾²Òô×´Ì¬
+      else                              % é™éŸ³çŠ¶æ€
          status  = 0;
          count(xn)   = 0;
          x1(xn)=0;
          x2(xn)=0;
       end
-   case 2,                              % 2 = ÓïÒô¶Î
-      if amp(n) > amp2 & ...            % ±£³ÖÔÚÓïÒô¶Î
+   case 2,                              % 2 = è¯­éŸ³æ®µ
+      if amp(n) > amp2 & ...            % ä¿æŒåœ¨è¯­éŸ³æ®µ
          zcr(n) > zcr2
          count(xn) = count(xn) + 1;
          silence(xn) = 0;
-      else                              % ÓïÒô½«½áÊø
+      else                              % è¯­éŸ³å°†ç»“æŸ
          silence(xn) = silence(xn)+1;
-         if silence(xn) < maxsilence    % ¾²Òô»¹²»¹»³¤£¬ÓïÒôÉĞÎ´½áÊø
+         if silence(xn) < maxsilence    % é™éŸ³è¿˜ä¸å¤Ÿé•¿ï¼Œè¯­éŸ³å°šæœªç»“æŸ
             count(xn)  = count(xn) + 1;
-         elseif count(xn) < minspeech      % ÓïÒô³¤¶ÈÌ«¶Ì£¬ÈÏÎªÊÇ¾²Òô»òÔëÉù
+         elseif count(xn) < minspeech   % è¯­éŸ³é•¿åº¦å¤ªçŸ­ï¼Œè®¤ä¸ºæ˜¯é™éŸ³æˆ–å™ªå£°
             status  = 0;
             silence(xn) = 0;
             count(xn)   = 0;
-         else                           % ÓïÒô½áÊø
+         else                           % è¯­éŸ³ç»“æŸ
             status  = 3;
-            x2(xn)=x1(xn)+count(xn);    %ÓïÒô½áÊøÎ»ÖÃ£¬end point
+            x2(xn)=x1(xn)+count(xn);    %è¯­éŸ³ç»“æŸä½ç½®ï¼Œend point
          end
       end
-   case 3,                              % ÓïÒô½áÊø£¬ÎªÏÂÒ»¸öÓïÒô×¼±¸
+   case 3,                              % è¯­éŸ³ç»“æŸï¼Œä¸ºä¸‹ä¸€ä¸ªè¯­éŸ³å‡†å¤‡
         status = 0;          
         xn=xn+1; 
         count(xn) = 0;
@@ -68,17 +68,17 @@ for n=1:fn
 end 
 
 el=length(x1);             
-if x1(el)==0, el=el-1; end              % »ñµÃx1µÄÊµ¼Ê³¤¶È
-if x2(el)==0                            % Èç¹ûx2×îºóÒ»¸öÖµÎª0£¬¶ÔËüÉèÖÃÎªfn
+if x1(el)==0, el=el-1; end              % è·å¾—x1çš„å®é™…é•¿åº¦
+if x2(el)==0                            % å¦‚æœx2æœ€åä¸€ä¸ªå€¼ä¸º0ï¼Œå¯¹å®ƒè®¾ç½®ä¸ºfn
     fprintf('Error: Not find endding point!\n');
     x2(el)=fn;
 end
-SF=zeros(1,fn);                         % °´x1ºÍx2£¬¶ÔSFºÍNF¸³Öµ
+SF=zeros(1,fn);                         % æŒ‰x1å’Œx2ï¼Œå¯¹SFå’ŒNFèµ‹å€¼
 NF=ones(1,fn);
 for i=1 : el
     SF(x1(i):x2(i))=1;
     NF(x1(i):x2(i))=0;
 end
-speechIndex=find(SF==1);                % ¼ÆËãvoiceseg
+speechIndex=find(SF==1);                % è®¡ç®—voiceseg
 voiceseg=SegmentInfo(speechIndex);
 vsl=length(voiceseg);
