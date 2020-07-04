@@ -71,6 +71,14 @@ ss=enframe(e,wlen,inc)';                % 对消噪后语音信号进行分帧
 
 [zcr,amp,voiceseg,vsl,SF,NF]=SpeechSegment(e,wlen,inc,NIS);  % 端点检测
 
+%Output:
+% zcr: zero-crossing rate(ZCR)/过零率,
+% amp:Short-time Energy(STE)/短时能量,
+% voiceseg: a class containing start,end,duration of each speech segments/一个装有每个语音片段开始、结束、时长的类,
+% vsl: total number of speech segments/一条音频一共有多少个语音片段,
+% SF: An array with speech frame labeled 1/一个长度为fn的数组，所有语音帧被标为1,
+% NF: An array with non-speech frame labeled 1/一个长度为fn的数组，所有非语音帧被标为1
+
 for k=1 : vsl                           % 画出语音信号起止点位置
     nx1=voiceseg(k).begin; nx2=voiceseg(k).end;
     nxl=voiceseg(k).duration;
@@ -79,7 +87,7 @@ for k=1 : vsl                           % 画出语音信号起止点位置
     line([frameTime(nx2) frameTime(nx2)],[-1 1],'color','r','LineStyle','--');
 end
 
-figure(3);
+figure(3);                              % 画出输入语音的短时能量和过零率，作为调参依据
 subplot 211; plot(amp);title('Short-time Energy per frame')
 subplot 212; plot(zcr);title('Short-time Zero Crossing Rate per frame');
 
