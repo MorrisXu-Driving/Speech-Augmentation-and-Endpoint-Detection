@@ -71,7 +71,7 @@ ss=enframe(e,wlen,inc)';                % 对消噪后语音信号进行分帧
 
 [zcr,amp,voiceseg,vsl,SF,NF]=SpeechSegment(e,wlen,inc,NIS);  % 端点检测
 
-%Output:
+% Output:
 % zcr: zero-crossing rate(ZCR)/过零率,
 % amp:Short-time Energy(STE)/短时能量,
 % voiceseg: a class containing start,end,duration of each speech segments/一个装有每个语音片段开始、结束、时长的类,
