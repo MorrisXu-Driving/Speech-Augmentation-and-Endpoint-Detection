@@ -1,5 +1,8 @@
 # Speech-Augmentation-and-Endpoint-Detection
 This repository is developed in MATLAB. Speech Augmentation is based on Adaptive Filtering while Endpoint Detection is based on Voice Activity Detection(VAD)
+# Prerequisite
+Please make sure that your MATLAB has installed **Voicebox**. This is their official website:http://www.ee.ic.ac.uk/hp/staff/dmb/voicebox/voicebox.html
+Installation of this toolbox is everywhere on the website. Please google it yourself.
 
 # Installation
 ## 1. git clone all files under the same directory.
